@@ -154,20 +154,6 @@ textarea{resize:vertical;min-height:72px;line-height:1.5}
       </div>
       <div style="color:#bbb;font-size:20px">&#8250;</div>
     </div>
-    <div class="form-card locked" onclick="soon()">
-      <div class="fci red">&#128658;</div>
-      <div class="fc-body">
-        <div class="fc-title">FW-Lift Abkl&#228;rung <span class="soon">Bald</span></div>
-        <div class="fc-sub">James Z&#252;rich &ndash; BSR 23-15 / SN EN 81-72</div>
-      </div>
-    </div>
-    <div class="form-card locked" onclick="soon()">
-      <div class="fci green">&#128295;</div>
-      <div class="fc-body">
-        <div class="fc-title">Wartungsprotokoll <span class="soon">Bald</span></div>
-        <div class="fc-sub">J&#228;hrliche Inspektion &amp; Service</div>
-      </div>
-    </div>
   </div>
   <div style="padding:14px;font-size:12px;color:#888;line-height:1.6">
     <strong style="color:#1a3a5c">Tipp:</strong> Grunddaten bereits im B&#252;ro einf&#252;llen, mit <em>Vorlage speichern</em> als .json sichern und vor Ort wieder laden.
@@ -200,7 +186,7 @@ var LOGO_SRC = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAagBqAAD/2wBDAAgGBgcGB
 
 var D = {
   standort:"", verwaltungTyp:"", verwaltung:"",
-  liftfirma:"", liftfirmaAndere:"",
+  liftfirma:"", liftfirmaAndere:"", anlageNr:"",
   bearbeitung:"", aufzugsart:"", grundtechnik:"", maschinenraum:"",
   datum:"", kabBearbeitet:true,
   kabFreiName:"", kabFreiVal:"",
@@ -231,11 +217,11 @@ var OPT = {
   verwaltungTyp:["Verwaltung","Eigent\u00fcmer","Architekt"],
   liftfirma:["Schindler Aufz\u00fcge AG","AS Aufz\u00fcge AG","Emch Aufz\u00fcge AG","Kone Aufz\u00fcge AG","Otis AG","Lift AG","Norm Aufz\u00fcge AG","Haslimann Aufz\u00fcge AG","Andere"],
   bearbeitung:["","Ersatz","Modernisierung","Reparatur"],
-  aufzugsart:["","Personenaufzug","Warenaufzug","Serviceaufzug","Bettenlift","Feuerwehraufzug","Unterfluraufzug","Kleingüteraufzug"],
+  aufzugsart:["","Personenaufzug","Warenaufzug","Serviceaufzug","Bettenlift","Feuerwehraufzug","Unterfluraufzug","Kleing\u00FCteraufzug"],
   grundtechnik:["","Seil","Gurt","Hydraulik","Kette","Spindel"],
   maschinenraum:["","ohne \u2013 Steuerung im Treppenhaus","ohne \u2013 Steuerung im alten Maschinenraum","bestehend oben","bestehend unten"],
   steuerungstyp:["","Druckknopfsteuerung","Kollektiv abw\u00e4rts","Kollektiv selektiv","Gruppensteuerung"],
-  verantwortlich:["","Lifthersteller","Bauf\u00fchrung","Elektriker","Baumeister","Verwaltung","Brandmeldelieferant","Architekt","Eigent\u00fcmer","Andere"],
+  verantwortlich:["","Lifthersteller","Bauf\u00fchrung","Elektriker","Maler","Baumeister","Verwaltung","Brandmeldelieferant","Architekt","Eigent\u00fcmer","Andere"],
   dokVerteiler:["","Lift-Consulting zustellen","Der Verwaltung zustellen","Dem Eigent\u00fcmer zustellen","Auf der Anlage deponieren"]
 };
 
@@ -336,7 +322,7 @@ function loadTemplate(input){
 function resetForm(){
   if(!confirm("Alle Daten zur\u00fccksetzen?")) return;
   D.standort=""; D.verwaltungTyp=""; D.verwaltung="";
-  D.liftfirma=""; D.liftfirmaAndere="";
+  D.liftfirma=""; D.liftfirmaAndere=""; D.anlageNr="";
   D.bearbeitung=""; D.aufzugsart=""; D.grundtechnik=""; D.maschinenraum="";
   D.datum=""; D.kabBearbeitet=true; D.kabFreiName=""; D.kabFreiVal="";
   D.steuerungstyp=""; D.tuerNeu=""; D.keinMR=false;
@@ -376,7 +362,7 @@ function next(){ flushInputs(); if(step<STEPS.length-1){ step++; render(); } }
 function prev(){ flushInputs(); if(step>0){ step--; render(); } }
 
 function flushInputs(){
-  var fields=["standort","verwaltung","verwaltungTyp","liftfirma","liftfirmaAndere",
+  var fields=["standort","verwaltung","verwaltungTyp","liftfirma","liftfirmaAndere","anlageNr",
     "bearbeitung","aufzugsart","grundtechnik","maschinenraum","bemerkungen","abnahme_datum","datum",
     "kabFreiName","steuerungstyp","tragriemenJahr","tragriemenMassnahmen","dokVerteiler"];
   fields.forEach(function(f){ var el=ge("fi_"+f); if(el) D[f]=el.value; });
@@ -386,7 +372,7 @@ function ddOpts(field,current){
   return OPT[field].map(function(o){ return "<option"+(current===o?" selected":"")+">"+esc(o)+"</option>"; }).join("");
 }
 
-/* ── STAMMDATEN ─────────────────────────────────────────────────────────── */
+/* \u2500\u2500 STAMMDATEN \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildStamm(){
   var lf=D.liftfirma||OPT.liftfirma[0];
   var vt=D.verwaltungTyp||OPT.verwaltungTyp[0];
@@ -404,6 +390,9 @@ function buildStamm(){
   +"<div id=\"lfAndereWrap\" style=\"margin-top:8px"+(lf==="Andere"?"":";display:none")+"\">"
   +"<input type=\"text\" id=\"fi_liftfirmaAndere\" value=\""+esc(D.liftfirmaAndere)+"\" placeholder=\"Firmenname\"></div>"
   +"</div>"
+  +"<div class=\"card\"><label class=\"field-lbl\">Anlage Nr.</label>"
+  +"<input type=\"text\" id=\"fi_anlageNr\" value=\""+esc(D.anlageNr)+"\" placeholder=\"z.B. AZ-2024-001\">"
+  +"</div>"
   +"<div class=\"card\"><div class=\"row2\">"
   +"<div><label class=\"field-lbl\">Bearbeitung</label><select id=\"fi_bearbeitung\">"+ddOpts("bearbeitung",D.bearbeitung)+"</select></div>"
   +"<div><label class=\"field-lbl\">Aufzugsart</label><select id=\"fi_aufzugsart\">"+ddOpts("aufzugsart",D.aufzugsart)+"</select></div>"
@@ -412,12 +401,9 @@ function buildStamm(){
   +"<div><label class=\"field-lbl\">Grundtechnik</label><select id=\"fi_grundtechnik\">"+ddOpts("grundtechnik",D.grundtechnik)+"</select></div>"
   +"<div><label class=\"field-lbl\">Maschinenraum</label><select id=\"fi_maschinenraum\">"+ddOpts("maschinenraum",D.maschinenraum)+"</select></div>"
   +"</div></div>"
-  +"<div class=\"card\"><label class=\"field-lbl\">Protokolldatum</label>"
-  +"<input type=\"date\" id=\"fi_datum\" value=\""+D.datum+"\">"
-  +"</div>";
 }
 
-/* ── KABINE ─────────────────────────────────────────────────────────────── */
+/* \u2500\u2500 KABINE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function chkRowHTML(item,idx){
   var val=D[item.k]||""; var rem=D[item.k+"_r"]||"";
   return "<div class=\"chk-row\" style=\""+(idx>0?"margin-top:8px":"")+"\">"
@@ -465,7 +451,7 @@ function toggleKab(){
 }
 function setKabFrei(val,el){ D.kabFreiVal=val; el.closest(".chk-btns").querySelectorAll(".cb").forEach(function(b){b.classList.remove("on");}); el.classList.add("on"); }
 
-/* ── STEUERUNG ──────────────────────────────────────────────────────────── */
+/* \u2500\u2500 STEUERUNG \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildSteuerung(){
   var html="<div class=\"sec-title\">Steuerung / Elektronik</div>"
   +"<div class=\"card\">"
@@ -488,7 +474,7 @@ function buildSteuerung(){
   return html;
 }
 
-/* ── TÜREN & SCHACHT ────────────────────────────────────────────────────── */
+/* \u2500\u2500 T\u00DCREN & SCHACHT \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildTuer(){
   var html="<div class=\"sec-title\">T\u00fcren / Maschinenraum / Schacht / Allgemein</div>";
   TUER_BASIS.forEach(function(item,i){
@@ -518,7 +504,7 @@ function buildTuer(){
 }
 function setTuerNeu(val,el){ D.tuerNeu=val; el.closest(".chk-btns").querySelectorAll(".cb").forEach(function(b){b.classList.remove("on");}); el.classList.add("on"); }
 
-/* ── TRAGRIEMEN ─────────────────────────────────────────────────────────── */
+/* \u2500\u2500 TRAGRIEMEN \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildTragriemen(){
   var akz=D.tragriemenAkzeptiert||"";
   return "<div class=\"sec-title\">Bei Tragriemen</div>"
@@ -546,7 +532,7 @@ function setTRAkz(val,el){
   var w=ge("trMassnahmenWrap"); if(w) w.style.display=val==="nein"?"":"none";
 }
 
-/* ── ABSCHLUSS & FOTOS ──────────────────────────────────────────────────── */
+/* \u2500\u2500 ABSCHLUSS & FOTOS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildAbschluss(){
   var done=ALL_ITEMS.filter(function(i){return D[i.k];}).length;
   var pct=Math.round(done/ALL_ITEMS.length*100);
@@ -601,7 +587,7 @@ function oaSelChange(sel){
   } else { if(fi) fi.remove(); D.oa[i].verantwortlichAndere=""; }
 }
 
-/* ── UNTERSCHRIFTEN ─────────────────────────────────────────────────────── */
+/* \u2500\u2500 UNTERSCHRIFTEN \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function buildSig(){
   var rows=["lc","lf","ev"].map(function(id){
     var labels={lc:"Lift-Consulting",lf:"Liftfirma",ev:"Eigent\u00fcmer / Vertreter"};
@@ -637,7 +623,7 @@ function buildSig(){
   +"</div></div>";
 }
 
-/* ── EVENT HELPERS ──────────────────────────────────────────────────────── */
+/* \u2500\u2500 EVENT HELPERS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function setV(key,val,el){ D[key]=val; el.closest(".chk-btns").querySelectorAll(".cb").forEach(function(b){b.classList.remove("on");}); el.classList.add("on"); }
 function setVEx(key,val,el){
   setV(key,val,el);
@@ -659,15 +645,28 @@ function setVEx(key,val,el){
 function setRisi(val,el){ D.risikoanalyse=val; el.closest(".chk-btns").querySelectorAll(".cb").forEach(function(b){b.classList.remove("on");}); el.classList.add("on"); }
 function setAZ(val,el){ D.anlagezustand=val; el.closest(".chk-btns").querySelectorAll(".cb").forEach(function(b){b.classList.remove("on");}); el.classList.add("on"); }
 
+function compressImage(dataUrl,callback){
+  var img=new Image();
+  img.onload=function(){
+    var MAX=1200, w=img.width, h=img.height;
+    if(w>MAX||h>MAX){ if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;} }
+    var cv=document.createElement("canvas"); cv.width=w; cv.height=h;
+    cv.getContext("2d").drawImage(img,0,0,w,h);
+    callback(cv.toDataURL("image/jpeg",0.65));
+  };
+  img.src=dataUrl;
+}
 function addPhoto(i,input){
   var file=input.files[0]; if(!file) return;
   var reader=new FileReader();
   reader.onload=function(e){
-    D.photos[i]=e.target.result;
-    var slot=ge("pslot_"+i); slot.classList.add("filled");
-    slot.innerHTML="<img src=\""+e.target.result+"\" alt=\"Foto "+(i+1)+"\">"
-    +"<button class=\"del-photo\" onclick=\"delPhoto("+i+",event)\">&#x2715;</button>"
-    +"<input type=\"file\" accept=\"image/*\" capture=\"environment\" onchange=\"addPhoto("+i+",this)\" style=\"display:none\">";
+    compressImage(e.target.result,function(compressed){
+      D.photos[i]=compressed;
+      var slot=ge("pslot_"+i); slot.classList.add("filled");
+      slot.innerHTML="<img src=\""+compressed+"\" alt=\"Foto "+(i+1)+"\">"
+      +"<button class=\"del-photo\" onclick=\"delPhoto("+i+",event)\">&#x2715;</button>"
+      +"<input type=\"file\" accept=\"image/*\" capture=\"environment\" onchange=\"addPhoto("+i+",this)\" style=\"display:none\">";
+    });
   };
   reader.readAsDataURL(file);
 }
@@ -696,7 +695,7 @@ function initCanvases(){
 function clearSig(id){ D.sigs[id].pad=null; var c=ge("sigc_"+id); if(c) c.getContext("2d").clearRect(0,0,c.width,c.height); }
 
 function bindInputs(){
-  var fields=["standort","verwaltung","verwaltungTyp","liftfirma","liftfirmaAndere",
+  var fields=["standort","verwaltung","verwaltungTyp","liftfirma","liftfirmaAndere","anlageNr",
     "bearbeitung","aufzugsart","grundtechnik","maschinenraum","bemerkungen","abnahme_datum","datum",
     "kabFreiName","steuerungstyp","tragriemenJahr","tragriemenMassnahmen","dokVerteiler"];
   fields.forEach(function(f){ var el=ge("fi_"+f); if(el) el.addEventListener("input",function(){D[f]=el.value;}); });
@@ -711,7 +710,7 @@ function bindInputs(){
   if(dvSel) dvSel.addEventListener("change",function(){ D.dokVerteiler=dvSel.value; });
 }
 
-/* ── PDF ─────────────────────────────────────────────────────────────────── */
+/* \u2500\u2500 PDF \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 function statusCell(key,val){
   if(!val) return "";
   var inv=INV_KEYS[key]||false;
@@ -735,7 +734,7 @@ function buildPrintHTML(){
   var azBg={ok:"#e1f5ee",nein:"#fcebeb",nachpruef:"#e6f1fb"};
   var standortFZ=esc(D.standort||"Lift-Consulting");
 
-  /* ── CSS ──────────────────────────────────────────────────────────────── */
+  /* \u2500\u2500 CSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   var css="<style>"
   +"@page{size:A4;margin:14mm 12mm 18mm 12mm}"
   +"html,body{height:auto}"
@@ -772,7 +771,7 @@ function buildPrintHTML(){
   +"padding:0 12mm;border-top:.5pt solid #ccc;font-size:7.5pt;color:#555;background:#fff}"
   +"<\/style>";
 
-  /* ── Shared header (repeated on each page) ─────────────────────────────── */
+  /* \u2500\u2500 Shared header (repeated on each page) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function pageHdr(){
     return "<div class=\"hdr\">"
     +"<h1 class=\"hdr-title\">Abnahmeprotokoll Aufzug</h1>"
@@ -780,7 +779,7 @@ function buildPrintHTML(){
     +"</div><div class=\"stripe\"></div>";
   }
 
-  /* ── Status cell helper ─────────────────────────────────────────────────── */
+  /* \u2500\u2500 Status cell helper \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function sc(key,val){
     if(!val) return "";
     var inv=INV_KEYS[key]||false;
@@ -790,7 +789,7 @@ function buildPrintHTML(){
     return "";
   }
 
-  /* ── Checklist table builder ────────────────────────────────────────────── */
+  /* \u2500\u2500 Checklist table builder \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function chkTable(items){
     var visible=items.filter(function(it){
       if(it.dep==="attikaRow"&&D["stg7"]==="nb") return false;
@@ -809,15 +808,16 @@ function buildPrintHTML(){
     return h+"</tbody></table>";
   }
 
-  /* ═══════════════════════════════════════════════════════════════
+  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
      PAGE 1: Stammdaten + Kabinenauskleidung
-  ═══════════════════════════════════════════════════════════════ */
+  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p1="<div class=\"page\">"+pageHdr();
 
   var stamm=[
     ["Standort",D.standort],
     [D.verwaltungTyp||"Verwaltung",D.verwaltung],
     ["Liftfirma",lf],
+    ["Anlage Nr.",D.anlageNr],
     ["Bearbeitung",D.bearbeitung],
     ["Aufzugsart",D.aufzugsart],
     ["Grundtechnik",D.grundtechnik],
@@ -850,9 +850,9 @@ function buildPrintHTML(){
   }
   p1+="</div>"; // end page 1
 
-  /* ═══════════════════════════════════════════════════════════════
+  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
      PAGE 2: Steuerungstyp + Steuerung / Elektronik
-  ═══════════════════════════════════════════════════════════════ */
+  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p2="<div class=\"page\">"+pageHdr();
   if(D.steuerungstyp){
     p2+="<div class=\"sec\">Steuerungstyp</div><p style=\"font-size:10pt;margin:3pt 0 6pt;font-weight:600;color:#1a3a5c\">"+esc(D.steuerungstyp)+"</p>";
@@ -860,9 +860,9 @@ function buildPrintHTML(){
   p2+="<div class=\"sec\">Steuerung / Elektronik</div>"+chkTable(STG);
   p2+="</div>"; // end page 2
 
-  /* ═══════════════════════════════════════════════════════════════
-     PAGE 3: Türen / MR / Schacht / Allgemein + Tragriemen
-  ═══════════════════════════════════════════════════════════════ */
+  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+     PAGE 3: T\u00FCren / MR / Schacht / Allgemein + Tragriemen
+  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p3="<div class=\"page\">"+pageHdr();
   p3+="<div class=\"sec\">T\u00fcren / Maschinenraum / Schacht / Allgemein</div>"+chkTable(TUER_BASIS);
 
@@ -876,9 +876,9 @@ function buildPrintHTML(){
   }
   p3+="</div>"; // end page 3
 
-  /* ═══════════════════════════════════════════════════════════════
+  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
      PAGE 4: Anlagezustand + Offene Arbeiten + Bemerkungen + Fotos
-  ═══════════════════════════════════════════════════════════════ */
+  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p4="<div class=\"page\">"+pageHdr();
 
   if(D.anlagezustand){
@@ -910,9 +910,9 @@ function buildPrintHTML(){
   }
   p4+="</div>"; // end page 4
 
-  /* ═══════════════════════════════════════════════════════════════
+  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
      PAGE 5: Unterschriften + Anlagedokumente + Verteiler
-  ═══════════════════════════════════════════════════════════════ */
+  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p5="<div class=\"page\">"+pageHdr();
 
   var parties=[{id:"lc",label:"Lift-Consulting"},{id:"lf",label:"Liftfirma"},{id:"ev",label:"Eigent\u00fcmer / Vertreter"}];
@@ -940,7 +940,7 @@ function buildPrintHTML(){
   +"</div>";
   p5+="</div>"; // end page 5
 
-  /* ── Assemble ────────────────────────────────────────────────────────────── */
+  /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   return css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 Abnahmeprotokoll Aufzug</span></div>"
   +p1+p2+p3+p4+p5;
