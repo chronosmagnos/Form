@@ -1054,24 +1054,27 @@ function clearSig(id){ var c=ge("sigc_"+id); if(c){ c.getContext("2d").clearRect
 function doPrint(){
   flushInputs();
   var html=buildPrintHTML();
-  var old=document.getElementById("printFrame");
-  if(old) old.parentNode.removeChild(old);
-  var fr=document.createElement("iframe");
-  fr.id="printFrame";
-  fr.style.cssText="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;border:none";
-  document.body.appendChild(fr);
-  var doc=fr.contentDocument||fr.contentWindow.document;
-  doc.open(); doc.write(html); doc.close();
-  fr.onload=function(){
-    try{ fr.contentWindow.focus(); fr.contentWindow.print(); }
-    catch(e){
-      var blob=new Blob([html],{type:"text/html"});
-      var url=URL.createObjectURL(blob);
-      var a=document.createElement("a"); a.href=url; a.download="PV-Reception.html";
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function(){URL.revokeObjectURL(url);},10000);
-    }
-  };
+  var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobile){
+    /* Mobile: gleichen Tab mit PDF-Seite ersetzen, Zurueck-Button eingebaut */
+    var blob=new Blob([html],{type:"text/html"});
+    var url=URL.createObjectURL(blob);
+    window.location.href=url;
+  } else {
+    /* Desktop: iframe-Print */
+    var old=document.getElementById("printFrame");
+    if(old) old.parentNode.removeChild(old);
+    var fr=document.createElement("iframe");
+    fr.id="printFrame";
+    fr.style.cssText="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;border:none";
+    document.body.appendChild(fr);
+    var doc=fr.contentDocument||fr.contentWindow.document;
+    doc.open(); doc.write(html); doc.close();
+    fr.onload=function(){
+      try{ fr.contentWindow.focus(); fr.contentWindow.print(); }
+      catch(e){ alert("Druck fehlgeschlagen. Bitte Browser-Menü → Drucken verwenden."); }
+    };
+  }
 }
 
 function buildPrintHTML(){
@@ -1105,7 +1108,7 @@ function buildPrintHTML(){
   function tblStart(){ return "<table style=\"width:100%;border-collapse:collapse;margin-bottom:8px\"><thead><tr style=\"background:#e8edf5\"><th style=\"padding:5px 6px;text-align:left;font-size:10px;width:55%\">"+t("pdfColPunkt")+"</th><th style=\"padding:5px 6px;text-align:left;font-size:10px;width:20%\">"+t("pdfColBefund")+"</th><th style=\"padding:5px 6px;text-align:left;font-size:10px;width:25%\">"+t("pdfColBem")+"</th></tr></thead><tbody>"; }
   function tblEnd(){ return "</tbody></table>"; }
 
-  var css="<style>@page{size:A4;margin:14mm 12mm 18mm 12mm}body{font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#1a1a1a;margin:0}.page{position:relative;min-height:calc(297mm - 32mm);page-break-after:always}.page:last-child{page-break-after:auto}<\/style>";
+  var css="<style>@page{size:A4;margin:14mm 12mm 18mm 12mm}body{font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#1a1a1a;margin:0}.page{position:relative;min-height:calc(297mm - 32mm);page-break-after:always}.page:last-child{page-break-after:auto}.back-btn{display:block;margin:12px auto 0;padding:12px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:10px;font-size:15px;cursor:pointer;font-family:inherit}@media print{.back-btn{display:none}}<\/style>";
 
   /* PAGE 1 */
   var p1="<div class=\"page\">"+hdr(t("pdfP1Title"))
@@ -1224,7 +1227,7 @@ function buildPrintHTML(){
   +"</ul></div>"
   +ftr()+"</div>";
 
-  return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"+css+"</head><body>"+p1+p2+p3+p4+p5+"</body></html>";
+  return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"+css+"</head><body>"+p1+p2+p3+p4+p5+"<div style=\"padding:16px;text-align:center\"><button class=\"back-btn\" onclick=\"history.back()\">&#8592; Zurück zum Formular</button></div></body></html>";
 }
 
 window.onload=function(){ applyLangUI(); };
