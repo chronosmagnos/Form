@@ -730,76 +730,70 @@ function buildPrintHTML(){
   flushInputs();
   var lf=D.liftfirma==="Andere"?D.liftfirmaAndere:D.liftfirma;
   var azLabel={ok:"In Betrieb",nein:"Nicht in Betrieb",nachpruef:"Nach Nachpr\u00fcfung in Betrieb"};
-  var azCol={ok:"#0f6e56",nein:"#a32d2d",nachpruef:"#185fa5"};
-  var azBg={ok:"#e1f5ee",nein:"#fcebeb",nachpruef:"#e6f1fb"};
+  var azCol={ok:"#0a6e3f",nein:"#c0392b",nachpruef:"#1a5276"};
+  var azBg={ok:"#e8f5ef",nein:"#fdecea",nachpruef:"#e8eff8"};
   var standortFZ=esc(D.standort||"Lift-Consulting");
+  var TITLE="Abnahmeprotokoll Aufzug";
 
-  /* \u2500\u2500 CSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   var css="<style>"
   +"@page{size:A4;margin:14mm 12mm 18mm 12mm}"
   +"html,body{height:auto}"
-  +"body{font-family:Helvetica,Arial,sans-serif;font-size:10pt;color:#000;margin:0;line-height:1.4}"
+  +"body{font-family:Helvetica,Arial,sans-serif;font-size:10pt;color:#222;margin:0;line-height:1.4}"
   +".page{page-break-after:always;min-height:calc(297mm - 32mm);box-sizing:border-box;padding-bottom:4mm}"
   +".page:last-child{page-break-after:auto}"
-  +".hdr{background:#1a3a5c;padding:7pt 12pt;display:flex;align-items:center;justify-content:space-between;margin-bottom:0}"
-  +".hdr-title{font-size:14pt;color:#000;font-weight:800;margin:0;background:#fff;padding:3pt 9pt;border-radius:3pt;white-space:nowrap}"
-  +".hdr-logo{height:38pt;max-width:125pt;object-fit:contain;background:#fff;padding:3pt 5pt;border-radius:3pt}"
-  +".stripe{background:#1a3a5c;height:3pt;margin-bottom:7pt}"
-  +".sec{font-size:9pt;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.05em;margin:8pt 0 3pt;border-bottom:1pt solid #d6e8f7;padding-bottom:2pt}"
+  +".hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5mm}"
+  +".hdr-title{font-size:16pt;font-weight:800;color:#000;margin:0;line-height:1.1}"
+  +".hdr-logo{height:30pt;max-width:105pt;object-fit:contain}"
+  +".sec{font-size:8.5pt;font-weight:700;color:#1a5276;text-transform:uppercase;letter-spacing:.06em;margin:8pt 0 2pt;border-bottom:1pt solid #1a5276;padding-bottom:1.5pt}"
   +".sec:first-child{margin-top:0}"
-  +"table{width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:5pt}"
-  +"th{background:#1a3a5c;color:#fff;padding:4pt 5pt;text-align:left;font-weight:700;font-size:9.5pt}"
-  +"td{padding:3.5pt 5pt;border-bottom:.5pt solid #ddd;vertical-align:middle;font-size:9pt;line-height:1.45}"
-  +"tr:nth-child(even) td{background:#f4f6f9}"
-  +".kv td{padding:4.5pt 5pt;font-size:10pt;line-height:1.5;border-bottom:.5pt solid #eee}"
-  +".kv td:first-child{font-weight:700;color:#333;width:38%}"
-  +".photos{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:3pt}"
-  +".pimg{width:100%;aspect-ratio:1;object-fit:cover;border:.5pt solid #ccc}"
-  +".sig-section{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:3pt}"
-  +".sig-box{border:.5pt solid #ccc;border-radius:3pt;padding:5pt}"
-  +".sig-party{font-size:9pt;font-weight:700;color:#1a3a5c;margin-bottom:3pt}"
-  +".sig-name{font-size:9pt;margin-bottom:3pt}"
-  +".sig-img{width:100%;height:20mm;object-fit:contain;border-top:.5pt solid #eee;padding-top:3pt}"
-  +".sig-line{border-top:.5pt solid #ccc;margin-top:12mm}"
-  +".az{display:inline-block;padding:3pt 12pt;border-radius:3pt;font-weight:700;font-size:10pt}"
+  +"table{width:100%;border-collapse:collapse;font-size:9.5pt;margin-bottom:5pt}"
+  +".kv td{padding:4pt 5pt;border-bottom:.5pt solid #e8e8e8;vertical-align:middle}"
+  +".kv td:first-child{font-weight:700;color:#111;width:38%}"
+  +".kv tr:nth-child(even) td{background:#f7f7f7}"
+  +".chk th{font-size:8.5pt;font-weight:400;color:#666;padding:3pt 5pt;border-bottom:.5pt solid #ccc;text-align:left;background:#fff}"
+  +".chk td{padding:3.5pt 5pt;border-bottom:.5pt solid #eee;vertical-align:middle;font-size:9pt}"
+  +".chk tr:nth-child(even) td{background:#f7f7f7}"
+  +".sja{color:#0a6e3f;font-weight:700}"
+  +".snein{color:#c0392b;font-weight:700}"
+  +".snb{color:#888;font-size:8.5pt}"
+  +".az{display:inline-block;padding:2pt 10pt;border-radius:3pt;font-weight:700;font-size:10pt}"
   +".subnote{font-size:8pt;color:#7a5800;background:#fffde7;border:.5pt solid #e0c040;border-radius:3pt;padding:2pt 5pt;display:inline-block}"
   +".verteiler-box{border:.5pt solid #ccc;border-radius:3pt;padding:5pt;margin-top:3pt}"
   +".verteiler-item{padding:3pt 0;font-size:9.5pt;border-bottom:.5pt solid #eee;display:flex;align-items:center;gap:6pt}"
   +".verteiler-item:last-child{border-bottom:none}"
-  +".vdot{width:5pt;height:5pt;border-radius:50%;background:#1a3a5c;display:inline-block;flex-shrink:0}"
-  +".footer{position:fixed;bottom:0;left:0;right:0;height:13mm;display:flex;align-items:center;justify-content:space-between;"
-  +"padding:0 12mm;border-top:.5pt solid #ccc;font-size:7.5pt;color:#555;background:#fff}"
+  +".vdot{width:5pt;height:5pt;border-radius:50%;background:#1a5276;display:inline-block;flex-shrink:0}"
+  +".photos{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:3pt}"
+  +".pimg{width:100%;aspect-ratio:1;object-fit:cover;border:.5pt solid #ccc}"
+  +".sig-section{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:3pt}"
+  +".sig-box{border:.5pt solid #ccc;border-radius:3pt;padding:5pt}"
+  +".sig-party{font-size:9pt;font-weight:700;color:#1a5276;margin-bottom:3pt}"
+  +".sig-name{font-size:9pt;margin-bottom:3pt}"
+  +".sig-img{width:100%;height:20mm;object-fit:contain;border-top:.5pt solid #eee;padding-top:3pt}"
+  +".sig-line{border-top:.5pt solid #ccc;margin-top:12mm}"
   +"<\/style>";
 
-  /* \u2500\u2500 Shared header (repeated on each page) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
-  function pageHdr(){
-    return "<div class=\"hdr\">"
-    +"<h1 class=\"hdr-title\">Abnahmeprotokoll Aufzug</h1>"
-    +"<img class=\"hdr-logo\" src=\""+LOGO_SRC+"\" alt=\"Lift-Consulting\">"
-    +"</div><div class=\"stripe\"></div>";
+  function pageHdr(title){
+    return "<div class=\"hdr\"><h1 class=\"hdr-title\">"+title+"</h1><img class=\"hdr-logo\" src=\""+LOGO_SRC+"\" alt=\"Lift-Consulting\"></div>";
   }
 
-  /* \u2500\u2500 Status cell helper \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function sc(key,val){
     if(!val) return "";
     var inv=INV_KEYS[key]||false;
-    if(val==="nb") return "<span style=\"color:#5f5e5a;font-size:8.5pt\">nicht bearbeitet</span>";
-    if(val==="ja"){ var col=inv?"#a32d2d":"#0f6e56",bg=inv?"#fcebeb":"#e1f5ee"; return "<span style=\"color:"+col+";background:"+bg+";font-weight:700;font-size:8.5pt;padding:1pt 5pt;border-radius:3pt\">Ja</span>"; }
-    if(val==="nein"){ var col2=inv?"#0f6e56":"#a32d2d",bg2=inv?"#e1f5ee":"#fcebeb"; return "<span style=\"color:"+col2+";background:"+bg2+";font-weight:700;font-size:8.5pt;padding:1pt 5pt;border-radius:3pt\">Nein</span>"; }
+    if(val==="nb") return "<span class=\"snb\">nicht bearbeitet</span>";
+    if(val==="ja"){ return "<span class=\""+(inv?"snein":"sja")+"\">Ja</span>"; }
+    if(val==="nein"){ return "<span class=\""+(inv?"sja":"snein")+"\">Nein</span>"; }
     return "";
   }
 
-  /* \u2500\u2500 Checklist table builder \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function chkTable(items){
     var visible=items.filter(function(it){
       if(it.dep==="attikaRow"&&D["stg7"]==="nb") return false;
       return D[it.k]||D[it.k+"_r"];
     });
     if(!visible.length) return "";
-    var h="<table><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Bemerkung</th></tr></thead><tbody>";
+    var h="<table class=\"chk\"><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Bemerkung</th></tr></thead><tbody>";
     visible.forEach(function(it,i){
-      var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
-      h+="<tr"+bg+"><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
+      h+="<tr><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
       if(it.sid==="fremdRow"&&D[it.k]==="ja"&&D.risikoanalyse){
         var rl=D.risikoanalyse==="erstellt"?"Risikoanalyse erstellt":"Risikoanalyse nicht erstellt \u2013 nachzuliefern";
         h+="<tr><td colspan=\"3\"><span class=\"subnote\">&#9888; "+esc(rl)+"</span></td></tr>";
@@ -808,10 +802,8 @@ function buildPrintHTML(){
     return h+"</tbody></table>";
   }
 
-  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-     PAGE 1: Stammdaten + Kabinenauskleidung
-  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
-  var p1="<div class=\"page\">"+pageHdr();
+  /* ══ PAGE 1: Stammdaten + Kabinenauskleidung ══ */
+  var p1="<div class=\"page\">"+pageHdr(TITLE);
 
   var stamm=[
     ["Standort",D.standort],
@@ -821,8 +813,7 @@ function buildPrintHTML(){
     ["Bearbeitung",D.bearbeitung],
     ["Aufzugsart",D.aufzugsart],
     ["Grundtechnik",D.grundtechnik],
-    ["Maschinenraum",D.maschinenraum],
-    ["Protokolldatum",fmtDate(D.datum)]
+    ["Maschinenraum",D.maschinenraum]
   ].filter(function(r){return r[1];});
   if(stamm.length){
     p1+="<div class=\"sec\">Stammdaten</div><table class=\"kv\"><tbody>";
@@ -835,71 +826,61 @@ function buildPrintHTML(){
     var hasFreiRow=D.kabFreiName||D.kabFreiVal;
     if(kabItems.length||hasFreiRow){
       p1+="<div class=\"sec\">Kabinenauskleidung</div>"
-      +"<table><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Bemerkung</th></tr></thead><tbody>";
-      kabItems.forEach(function(it,i){
-        var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
-        p1+="<tr"+bg+"><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
+      +"<table class=\"chk\"><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Bemerkung</th></tr></thead><tbody>";
+      kabItems.forEach(function(it){
+        p1+="<tr><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
       });
       if(hasFreiRow){
-        var fi=kabItems.length;
-        var bg2=fi%2===0?" style=\"background:#f4f6f9\"":"";
-        p1+="<tr"+bg2+"><td>"+esc(D.kabFreiName||"Zusatz")+"</td><td>"+sc("kabFrei",D.kabFreiVal||"")+"</td><td>"+esc(D["kabFrei_r"]||"")+"</td></tr>";
+        p1+="<tr><td>"+esc(D.kabFreiName||"Zusatz")+"</td><td>"+sc("kabFrei",D.kabFreiVal||"")+"</td><td>"+esc(D["kabFrei_r"]||"")+"</td></tr>";
       }
       p1+="</tbody></table>";
     }
   }
-  p1+="</div>"; // end page 1
+  p1+="</div>";
 
-  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-     PAGE 2: Steuerungstyp + Steuerung / Elektronik
-  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
-  var p2="<div class=\"page\">"+pageHdr();
+  /* ══ PAGE 2: Steuerungstyp + Steuerung/Elektronik ══ */
+  var p2="<div class=\"page\">"+pageHdr(TITLE);
   if(D.steuerungstyp){
-    p2+="<div class=\"sec\">Steuerungstyp</div><p style=\"font-size:10pt;margin:3pt 0 6pt;font-weight:600;color:#1a3a5c\">"+esc(D.steuerungstyp)+"</p>";
+    p2+="<div class=\"sec\">Steuerungstyp</div><p style=\"font-size:10pt;margin:3pt 0 6pt;font-weight:600;color:#1a5276\">"+esc(D.steuerungstyp)+"</p>";
   }
   p2+="<div class=\"sec\">Steuerung / Elektronik</div>"+chkTable(STG);
-  p2+="</div>"; // end page 2
+  p2+="</div>";
 
-  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-     PAGE 3: T\u00FCren / MR / Schacht / Allgemein + Tragriemen
-  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
-  var p3="<div class=\"page\">"+pageHdr();
+  /* ══ PAGE 3: Türen + Tragriemen ══ */
+  var p3="<div class=\"page\">"+pageHdr(TITLE);
   p3+="<div class=\"sec\">T\u00fcren / Maschinenraum / Schacht / Allgemein</div>"+chkTable(TUER_BASIS);
 
   if(D.tragriemenJahr||D.tragriemenAkzeptiert){
-    p3+="<div class=\"sec\" style=\"margin-top:16pt\">Bei Tragriemen</div>"
+    p3+="<div class=\"sec\" style=\"margin-top:14pt\">Tragriemen</div>"
     +"<table class=\"kv\"><tbody>";
     if(D.tragriemenJahr) p3+="<tr><td>Herstellungsjahr</td><td>"+esc(D.tragriemenJahr)+"</td></tr>";
     if(D.tragriemenAkzeptiert) p3+="<tr><td>Wird so akzeptiert</td><td>"+sc("tRAkz",D.tragriemenAkzeptiert)+"</td></tr>";
     if(D.tragriemenAkzeptiert==="nein"&&D.tragriemenMassnahmen) p3+="<tr><td>Massnahmen</td><td>"+esc(D.tragriemenMassnahmen)+"</td></tr>";
     p3+="</tbody></table>";
   }
-  p3+="</div>"; // end page 3
+  p3+="</div>";
 
-  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-     PAGE 4: Anlagezustand + Offene Arbeiten + Bemerkungen + Fotos
-  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
-  var p4="<div class=\"page\">"+pageHdr();
+  /* ══ PAGE 4: Anlagezustand + Offene Arbeiten + Bemerkungen + Fotos ══ */
+  var p4="<div class=\"page\">"+pageHdr(TITLE);
 
   if(D.anlagezustand){
     var ac=azCol[D.anlagezustand]||"#000",ab=azBg[D.anlagezustand]||"#eee";
-    p4+="<div class=\"sec\">Anlagezustand</div><p style=\"margin:3pt 0 6pt\"><span class=\"az\" style=\"color:"+ac+";background:"+ab+"\">"+(azLabel[D.anlagezustand]||"")+"</span></p>";
+    p4+="<div class=\"sec\">Anlagezustand</div><p style=\"margin:3pt 0 6pt\"><span class=\"az\" style=\"color:"+ac+";background:"+ab+"\">"+esc(azLabel[D.anlagezustand]||"")+"</span></p>";
   }
 
   var fOA=D.oa.filter(function(r){return r.arbeit||r.verantwortlich||r.datum;});
   if(fOA.length){
     p4+="<div class=\"sec\">Offene Arbeiten</div>"
-    +"<table><thead><tr><th>Beschreibung</th><th style=\"width:24%\">Verantwortlich</th><th style=\"width:17%\">Datum</th></tr></thead><tbody>";
+    +"<table class=\"chk\"><thead><tr><th>Beschreibung</th><th style=\"width:24%\">Verantwortlich</th><th style=\"width:17%\">Datum</th></tr></thead><tbody>";
     fOA.forEach(function(r,i){
-      var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
       var v=r.verantwortlich==="Andere"?r.verantwortlichAndere:r.verantwortlich;
-      p4+="<tr"+bg+"><td>"+esc(r.arbeit)+"</td><td>"+esc(v)+"</td><td>"+fmtDate(r.datum)+"</td></tr>";
+      p4+="<tr><td>"+esc(r.arbeit)+"</td><td>"+esc(v)+"</td><td>"+fmtDate(r.datum)+"</td></tr>";
     });
     p4+="</tbody></table>";
   }
 
   if(D.bemerkungen){
-    p4+="<div class=\"sec\">Allgemeine Bemerkungen</div><p style=\"font-size:9pt;margin:0 0 5pt;white-space:pre-wrap;line-height:1.5\">"+esc(D.bemerkungen)+"</p>";
+    p4+="<div class=\"sec\">Bemerkungen</div><p style=\"font-size:9pt;margin:0 0 5pt;white-space:pre-wrap;line-height:1.5\">"+esc(D.bemerkungen)+"</p>";
   }
 
   var photos=D.photos.filter(function(p){return p;});
@@ -908,15 +889,13 @@ function buildPrintHTML(){
     photos.forEach(function(ph){ p4+="<img class=\"pimg\" src=\""+ph+"\" alt=\"Foto\">"; });
     p4+="</div>";
   }
-  p4+="</div>"; // end page 4
+  p4+="</div>";
 
-  /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-     PAGE 5: Unterschriften + Anlagedokumente + Verteiler
-  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
-  var p5="<div class=\"page\">"+pageHdr();
+  /* ══ PAGE 5: Unterschriften + Anlagedokumente + Verteiler ══ */
+  var p5="<div class=\"page\">"+pageHdr(TITLE);
 
   var parties=[{id:"lc",label:"Lift-Consulting"},{id:"lf",label:"Liftfirma"},{id:"ev",label:"Eigent\u00fcmer / Vertreter"}];
-  p5+="<div class=\"sec\">Unterschriften"+(D.abnahme_datum?" &nbsp;|&nbsp; Datum: "+fmtDate(D.abnahme_datum):"")+"</div>"
+  p5+="<div class=\"sec\">Unterschriften"+(D.abnahme_datum?" \u00a0|\u00a0 Datum: "+fmtDate(D.abnahme_datum):"")+"</div>"
   +"<div class=\"sig-section\">";
   parties.forEach(function(p){
     var s=D.sigs[p.id];
@@ -938,9 +917,8 @@ function buildPrintHTML(){
   +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Liftfirma</div>"
   +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Lift-Consulting Menzel GmbH</div>"
   +"</div>";
-  p5+="</div>"; // end page 5
+  p5+="</div>";
 
-  /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   return "<meta charset=\"UTF-8\">"+css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 Abnahmeprotokoll Aufzug</span></div>"
   +p1+p2+p3+p4+p5;
