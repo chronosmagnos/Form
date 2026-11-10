@@ -558,7 +558,7 @@ function buildAbschluss(){
 
   return "<div class=\"sec-title\">\u00dcbersicht</div>"
   +"<div class=\"card\">"
-  +"<div class=\"sum-row\"><span class=\"sum-lbl\">Pr\u00fcfpunkte</span><span style=\"font-weight:500\">"+done+" / "+ALL_ITEMS.length+" <span class=\"pill "+(pct===100?"pill-ok":"pill-pend")+"\">"+pct+"%</span></span></div>"
+  +"<div class=\"sum-row\"><span class=\"sum-lbl\">Point de contrôlee</span><span style=\"font-weight:500\">"+done+" / "+ALL_ITEMS.length+" <span class=\"pill "+(pct===100?"pill-ok":"pill-pend")+"\">"+pct+"%</span></span></div>"
   +"<div class=\"sum-row\"><span class=\"sum-lbl\">Standort</span><span style=\"font-weight:500\">"+esc(D.standort||"\u2014")+"</span></div>"
   +"<div class=\"sum-row\"><span class=\"sum-lbl\">Entreprise d’ascenseurs</span><span style=\"font-weight:500\">"+esc((D.liftfirma==="Autre"?D.liftfirmaAndere:D.liftfirma)||"\u2014")+"</span></div>"
   +"<div class=\"sum-row\"><span class=\"sum-lbl\">Protokolldatum</span><span style=\"font-weight:500\">"+(fmtDate(D.datum)||"\u2014")+"</span></div>"
@@ -573,7 +573,7 @@ function buildAbschluss(){
   +"<div class=\"card\" style=\"padding:0;overflow:hidden\">"
   +"<table class=\"oa-table\"><thead><tr><th>Beschreibung</th><th style=\"width:110px\">Verantwortlich</th><th style=\"width:108px\">Datum</th></tr></thead><tbody>"+oaRows+"</tbody></table>"
   +"</div>"
-  +"<div class=\"sec-title\" style=\"margin-top:6px\">Allgemeine Remarques</div>"
+  +"<div class=\"sec-title\" style=\"margin-top:6px\">Remarques</div>"
   +"<div class=\"card\"><textarea id=\"fi_bemerkungen\" placeholder=\"Remarques\">"+esc(D.bemerkungen)+"</textarea></div>"
   +"<div class=\"sec-title\" style=\"margin-top:6px\">Photos (max. 8)</div>"
   +"<div class=\"card\"><div class=\"photo-grid\">"+slots+"</div></div>";
@@ -714,7 +714,7 @@ function bindInputs(){
 function statusCell(key,val){
   if(!val) return "";
   var inv=INV_KEYS[key]||false;
-  if(val==="nb") return "<span style=\"color:#5f5e5a;font-size:9pt\">nicht bearbeitet</span>";
+  if(val==="nb") return "<span style=\"color:#5f5e5a;font-size:9pt\">non traité</span>";
   if(val==="ja"){
     var col=inv?"#a32d2d":"#0f6e56"; var bg=inv?"#fcebeb":"#e1f5ee";
     return "<span style=\"color:"+col+";background:"+bg+";font-weight:700;font-size:9pt;padding:1pt 6pt;border-radius:3pt\">Oui</span>";
@@ -729,7 +729,7 @@ function statusCell(key,val){
 function buildPrintHTML(){
   flushInputs();
   var lf=D.liftfirma==="Autre"?D.liftfirmaAndere:D.liftfirma;
-  var azLabel={ok:"En service",nein:"Nicht in Betrieb",nachpruef:"Nach Nachpr\u00fcfung in Betrieb"};
+  var azLabel={ok:"En service",nein:"Hors service",nachpruef:"En service après contrôle"};
   var azCol={ok:"#0f6e56",nein:"#a32d2d",nachpruef:"#185fa5"};
   var azBg={ok:"#e1f5ee",nein:"#fcebeb",nachpruef:"#e6f1fb"};
   var standortFZ=esc(D.standort||"Lift-Consulting");
@@ -783,7 +783,7 @@ function buildPrintHTML(){
   function sc(key,val){
     if(!val) return "";
     var inv=INV_KEYS[key]||false;
-    if(val==="nb") return "<span style=\"color:#5f5e5a;font-size:8.5pt\">nicht bearbeitet</span>";
+    if(val==="nb") return "<span style=\"color:#5f5e5a;font-size:8.5pt\">non traité</span>";
     if(val==="ja"){ var col=inv?"#a32d2d":"#0f6e56",bg=inv?"#fcebeb":"#e1f5ee"; return "<span style=\"color:"+col+";background:"+bg+";font-weight:700;font-size:8.5pt;padding:1pt 5pt;border-radius:3pt\">Oui</span>"; }
     if(val==="nein"){ var col2=inv?"#0f6e56":"#a32d2d",bg2=inv?"#e1f5ee":"#fcebeb"; return "<span style=\"color:"+col2+";background:"+bg2+";font-weight:700;font-size:8.5pt;padding:1pt 5pt;border-radius:3pt\">Non</span>"; }
     return "";
@@ -796,12 +796,12 @@ function buildPrintHTML(){
       return D[it.k]||D[it.k+"_r"];
     });
     if(!visible.length) return "";
-    var h="<table><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Remarque</th></tr></thead><tbody>";
+    var h="<table><thead><tr><th style=\"width:52%\">Point de contrôle</th><th style=\"width:14%\">Status</th><th>Remarque</th></tr></thead><tbody>";
     visible.forEach(function(it,i){
       var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
       h+="<tr"+bg+"><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
       if(it.sid==="fremdRow"&&D[it.k]==="ja"&&D.risikoanalyse){
-        var rl=D.risikoanalyse==="erstellt"?"Risikoanalyse erstellt":"Risikoanalyse nicht erstellt \u2013 nachzuliefern";
+        var rl=D.risikoanalyse==="erstellt"?"Analyse de risque établie":"Analyse de risque non établie – à fournir ultérieurement";
         h+="<tr><td colspan=\"3\"><span class=\"subnote\">&#9888; "+esc(rl)+"</span></td></tr>";
       }
     });
@@ -815,14 +815,14 @@ function buildPrintHTML(){
 
   var stamm=[
     ["Standort",D.standort],
-    [D.verwaltungTyp||"Verwaltung",D.verwaltung],
+    [D.verwaltungTyp||"Administration",D.verwaltung],
     ["Entreprise d’ascenseurs",lf],
     ["N° d’installation",D.anlageNr],
     ["Type de travaux",D.bearbeitung],
     ["Type d’ascenseur",D.aufzugsart],
     ["Technique de base",D.grundtechnik],
     ["Local de machines",D.maschinenraum],
-    ["Protokolldatum",fmtDate(D.datum)]
+    ["Date du procès-verbal",fmtDate(D.datum)]
   ].filter(function(r){return r[1];});
   if(stamm.length){
     p1+="<div class=\"sec\">Données de base</div><table class=\"kv\"><tbody>";
@@ -834,8 +834,8 @@ function buildPrintHTML(){
     var kabItems=KAB.filter(function(it){return D[it.k]||D[it.k+"_r"];});
     var hasFreiRow=D.kabFreiName||D.kabFreiVal;
     if(kabItems.length||hasFreiRow){
-      p1+="<div class=\"sec\">Kabinenauskleidung</div>"
-      +"<table><thead><tr><th style=\"width:52%\">Pr\u00fcfpunkt</th><th style=\"width:14%\">Status</th><th>Remarque</th></tr></thead><tbody>";
+      p1+="<div class=\"sec\">Habillage cabine</div>"
+      +"<table><thead><tr><th style=\"width:52%\">Point de contrôle</th><th style=\"width:14%\">Status</th><th>Remarque</th></tr></thead><tbody>";
       kabItems.forEach(function(it,i){
         var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
         p1+="<tr"+bg+"><td>"+esc(it.t)+"</td><td>"+sc(it.k,D[it.k]||"")+"</td><td>"+esc(D[it.k+"_r"]||"")+"</td></tr>";
@@ -843,7 +843,7 @@ function buildPrintHTML(){
       if(hasFreiRow){
         var fi=kabItems.length;
         var bg2=fi%2===0?" style=\"background:#f4f6f9\"":"";
-        p1+="<tr"+bg2+"><td>"+esc(D.kabFreiName||"Zusatz")+"</td><td>"+sc("kabFrei",D.kabFreiVal||"")+"</td><td>"+esc(D["kabFrei_r"]||"")+"</td></tr>";
+        p1+="<tr"+bg2+"><td>"+esc(D.kabFreiName||"Complément")+"</td><td>"+sc("kabFrei",D.kabFreiVal||"")+"</td><td>"+esc(D["kabFrei_r"]||"")+"</td></tr>";
       }
       p1+="</tbody></table>";
     }
@@ -864,14 +864,14 @@ function buildPrintHTML(){
      PAGE 3: T\u00FCren / MR / Schacht / Allgemein + Sangles porteuses
   \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p3="<div class=\"page\">"+pageHdr();
-  p3+="<div class=\"sec\">T\u00fcren / Local de machines / Schacht / Allgemein</div>"+chkTable(TUER_BASIS);
+  p3+="<div class=\"sec\">Portes / Local de machines / Gaine / Général</div>"+chkTable(TUER_BASIS);
 
   if(D.tragriemenOuihr||D.tragriemenAkzeptiert){
     p3+="<div class=\"sec\" style=\"margin-top:16pt\">Bei Sangles porteuses</div>"
     +"<table class=\"kv\"><tbody>";
-    if(D.tragriemenOuihr) p3+="<tr><td>Herstellungsjahr</td><td>"+esc(D.tragriemenOuihr)+"</td></tr>";
+    if(D.tragriemenOuihr) p3+="<tr><td>Année de fabrication</td><td>"+esc(D.tragriemenOuihr)+"</td></tr>";
     if(D.tragriemenAkzeptiert) p3+="<tr><td>Wird so akzeptiert</td><td>"+sc("tRAkz",D.tragriemenAkzeptiert)+"</td></tr>";
-    if(D.tragriemenAkzeptiert==="nein"&&D.tragriemenMassnahmen) p3+="<tr><td>Massnahmen</td><td>"+esc(D.tragriemenMassnahmen)+"</td></tr>";
+    if(D.tragriemenAkzeptiert==="nein"&&D.tragriemenMassnahmen) p3+="<tr><td>Mesures</td><td>"+esc(D.tragriemenMassnahmen)+"</td></tr>";
     p3+="</tbody></table>";
   }
   p3+="</div>"; // end page 3
@@ -889,7 +889,7 @@ function buildPrintHTML(){
   var fOA=D.oa.filter(function(r){return r.arbeit||r.verantwortlich||r.datum;});
   if(fOA.length){
     p4+="<div class=\"sec\">Travaux en suspens</div>"
-    +"<table><thead><tr><th>Beschreibung</th><th style=\"width:24%\">Verantwortlich</th><th style=\"width:17%\">Datum</th></tr></thead><tbody>";
+    +"<table><thead><tr><th>Description</th><th style=\"width:24%\">Responsable</th><th style=\"width:17%\">Date</th></tr></thead><tbody>";
     fOA.forEach(function(r,i){
       var bg=i%2===0?" style=\"background:#f4f6f9\"":"";
       var v=r.verantwortlich==="Autre"?r.verantwortlichAndere:r.verantwortlich;
@@ -899,13 +899,13 @@ function buildPrintHTML(){
   }
 
   if(D.bemerkungen){
-    p4+="<div class=\"sec\">Allgemeine Remarques</div><p style=\"font-size:9pt;margin:0 0 5pt;white-space:pre-wrap;line-height:1.5\">"+esc(D.bemerkungen)+"</p>";
+    p4+="<div class=\"sec\">Remarques</div><p style=\"font-size:9pt;margin:0 0 5pt;white-space:pre-wrap;line-height:1.5\">"+esc(D.bemerkungen)+"</p>";
   }
 
   var photos=D.photos.filter(function(p){return p;});
   if(photos.length){
     p4+="<div class=\"sec\">Photos</div><div class=\"photos\">";
-    photos.forEach(function(ph){ p4+="<img class=\"pimg\" src=\""+ph+"\" alt=\"Foto\">"; });
+    photos.forEach(function(ph){ p4+="<img class=\"pimg\" src=\""+ph+"\" alt=\"Photo\">"; });
     p4+="</div>";
   }
   p4+="</div>"; // end page 4
@@ -915,14 +915,14 @@ function buildPrintHTML(){
   \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
   var p5="<div class=\"page\">"+pageHdr();
 
-  var parties=[{id:"lc",label:"Lift-Consulting"},{id:"lf",label:"Entreprise d’ascenseurs"},{id:"ev",label:"Eigent\u00fcmer / Vertreter"}];
+  var parties=[{id:"lc",label:"Lift-Consulting"},{id:"lf",label:"Entreprise d’ascenseurs"},{id:"ev",label:"Propriétaire / Représentant"}];
   p5+="<div class=\"sec\">Signatures"+(D.abnahme_datum?" &nbsp;|&nbsp; Datum: "+fmtDate(D.abnahme_datum):"")+"</div>"
   +"<div class=\"sig-section\">";
   parties.forEach(function(p){
     var s=D.sigs[p.id];
     p5+="<div class=\"sig-box\"><div class=\"sig-party\">"+p.label+"</div>"
     +(s.name?"<div class=\"sig-name\">"+esc(s.name)+"</div>":"<div style=\"height:9pt\"></div>")
-    +(s.pad?"<img class=\"sig-img\" src=\""+s.pad+"\" alt=\"Unterschrift\">":"<div class=\"sig-line\"></div>")
+    +(s.pad?"<img class=\"sig-img\" src=\""+s.pad+"\" alt=\"Signature\">":"<div class=\"sig-line\"></div>")
     +"</div>";
   });
   p5+="</div>";
@@ -932,16 +932,16 @@ function buildPrintHTML(){
     +"<p style=\"font-size:9.5pt;margin:3pt 0 6pt\">Die Documents d’installation inkl. den allf\u00e4lligen Konformit\u00e4tserl\u00e4rungen sind: <strong>"+esc(D.dokVerteiler)+"</strong></p>";
   }
 
-  p5+="<div class=\"sec\" style=\"margin-top:28pt\">Verteiler</div>"
+  p5+="<div class=\"sec\" style=\"margin-top:28pt\">Distribution</div>"
   +"<div class=\"verteiler-box\">"
-  +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Eigent\u00fcmer</div>"
+  +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Propriétaire</div>"
   +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Entreprise d’ascenseurs</div>"
   +"<div class=\"verteiler-item\"><span class=\"vdot\"></span>Lift-Consulting Menzel GmbH</div>"
   +"</div>";
   p5+="</div>"; // end page 5
 
   /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
-  return css
+  return "<meta charset=\"UTF-8\">"+css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 PV de réception ascenseur</span></div>"
   +p1+p2+p3+p4+p5;
 }
