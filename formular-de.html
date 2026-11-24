@@ -285,7 +285,12 @@ function ge(id){ return document.getElementById(id); }
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
 function showView(id){ document.querySelectorAll(".view").forEach(function(v){v.classList.remove("active");}); ge(id).classList.add("active"); }
 function goBack(){ flushInputs(); showView("vLib"); ge("navTitle").textContent="Formular-App"; }
-function openForm(){ step=0; showView("vForm"); render(); }
+function openForm(){
+  step=0;
+  var restored=loadDraft();
+  showView("vForm"); render();
+  if(restored && D.standort) showToast("Entwurf wiederhergestellt ✓");
+}
 function soon(){ alert("Dieses Formular wird demn\u00e4chst hinzugef\u00fcgt."); }
 function fmtDate(s){ if(!s) return ""; var p=s.split("-"); return p.length===3 ? p[2]+"."+p[1]+"."+p[0] : s; }
 
@@ -332,6 +337,7 @@ function resetForm(){
   D.bemerkungen=""; D.anlagezustand=""; D.abnahme_datum="";
   D.sigs={lc:{name:"",pad:null},lf:{name:"",pad:null},ev:{name:"",pad:null}};
   D.photos=[null,null,null,null,null,null,null,null]; D.risikoanalyse="";
+  try{ localStorage.removeItem("lc_draft"); }catch(e){}
   showToast("Formular zur\u00fcckgesetzt");
 }
 
@@ -366,6 +372,19 @@ function flushInputs(){
     "bearbeitung","aufzugsart","grundtechnik","maschinenraum","bemerkungen","abnahme_datum","datum",
     "kabFreiName","steuerungstyp","tragriemenJahr","tragriemenMassnahmen","dokVerteiler"];
   fields.forEach(function(f){ var el=ge("fi_"+f); if(el) D[f]=el.value; });
+  autoSave();
+}
+function autoSave(){
+  try{ localStorage.setItem("lc_draft",JSON.stringify(D)); }catch(e){}
+}
+function loadDraft(){
+  try{
+    var raw=localStorage.getItem("lc_draft");
+    if(!raw) return false;
+    var saved=JSON.parse(raw);
+    Object.assign(D,saved);
+    return true;
+  }catch(e){ return false; }
 }
 
 function ddOpts(field,current){
@@ -941,7 +960,7 @@ function buildPrintHTML(){
   p5+="</div>"; // end page 5
 
   /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
-  return "<meta charset=\"UTF-8\"><title>Abnahmeprotokoll Aufzug</title>"+css
+  return "<meta charset=\"UTF-8\"><title>Abnahmeprotokoll Aufzug</title><script>window.onload=function(){window.print();}<\/script>"+css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 Abnahmeprotokoll Aufzug</span></div>"
   +p1+p2+p3+p4+p5;
 }
