@@ -741,14 +741,14 @@ function buildPrintHTML(){
   +"body{font-family:Helvetica,Arial,sans-serif;font-size:10pt;color:#000;margin:0;line-height:1.4}"
   +".page{page-break-after:always;min-height:calc(297mm - 32mm);box-sizing:border-box;padding-bottom:4mm}"
   +".page:last-child{page-break-after:auto}"
-  +".hdr{background:#1a3a5c;padding:7pt 12pt;display:flex;align-items:center;justify-content:space-between;margin-bottom:0}"
-  +".hdr-title{font-size:14pt;color:#000;font-weight:800;margin:0;background:#fff;padding:3pt 9pt;border-radius:3pt;white-space:nowrap}"
-  +".hdr-logo{height:38pt;max-width:125pt;object-fit:contain;background:#fff;padding:3pt 5pt;border-radius:3pt}"
-  +".stripe{background:#1a3a5c;height:3pt;margin-bottom:7pt}"
+  +".hdr{background:#fff;padding:4pt 0 4pt;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5pt solid #1a3a5c;margin-bottom:0}"
+  +".hdr-title{font-size:13pt;color:#1a3a5c;font-weight:800;margin:0;white-space:nowrap}"
+  +".hdr-logo{height:32pt;max-width:110pt;object-fit:contain}"
+  +".stripe{background:#1a3a5c;height:2pt;margin-bottom:7pt}"
   +".sec{font-size:9pt;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.05em;margin:8pt 0 3pt;border-bottom:1pt solid #d6e8f7;padding-bottom:2pt}"
   +".sec:first-child{margin-top:0}"
   +"table{width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:5pt}"
-  +"th{background:#1a3a5c;color:#fff;padding:4pt 5pt;text-align:left;font-weight:700;font-size:9.5pt}"
+  +"th{background:#e8eef5;color:#1a3a5c;padding:4pt 5pt;text-align:left;font-weight:700;font-size:9.5pt}"
   +"td{padding:3.5pt 5pt;border-bottom:.5pt solid #ddd;vertical-align:middle;font-size:9pt;line-height:1.45}"
   +"tr:nth-child(even) td{background:#f4f6f9}"
   +".kv td{padding:4.5pt 5pt;font-size:10pt;line-height:1.5;border-bottom:.5pt solid #eee}"
@@ -774,7 +774,7 @@ function buildPrintHTML(){
   /* \u2500\u2500 Shared header (repeated on each page) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
   function pageHdr(){
     return "<div class=\"hdr\">"
-    +"<h1 class=\"hdr-title\">Abnahmeprotokoll Aufzug</h1>"
+    +"<span></span>"
     +"<img class=\"hdr-logo\" src=\""+LOGO_SRC+"\" alt=\"Lift-Consulting\">"
     +"</div><div class=\"stripe\"></div>";
   }
@@ -941,7 +941,7 @@ function buildPrintHTML(){
   p5+="</div>"; // end page 5
 
   /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
-  return "<title>Abnahmeprotokoll Aufzug</title>"+css
+  return "<meta charset=\"UTF-8\"><title>Abnahmeprotokoll Aufzug</title>"+css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 Abnahmeprotokoll Aufzug</span></div>"
   +p1+p2+p3+p4+p5;
 }
