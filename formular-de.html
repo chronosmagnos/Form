@@ -960,7 +960,7 @@ function buildPrintHTML(){
   p5+="</div>"; // end page 5
 
   /* \u2500\u2500 Assemble \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
-  return "<meta charset=\"UTF-8\"><title>Abnahmeprotokoll Aufzug</title><script>window.onload=function(){window.print();}<\/script>"+css
+  return "<meta charset=\"UTF-8\"><title>Abnahmeprotokoll Aufzug</title>"+css
   +"<div class=\"footer\"><span>"+standortFZ+"</span><span>Lift-Consulting \u2013 Abnahmeprotokoll Aufzug</span></div>"
   +p1+p2+p3+p4+p5;
 }
@@ -970,7 +970,8 @@ function doPrint(){
   var html=buildPrintHTML();
   var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if(isMobile){
-    var blob=new Blob([html],{type:"text/html"});
+    var mobileHtml=html+"<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>";
+    var blob=new Blob([mobileHtml],{type:"text/html"});
     var url=URL.createObjectURL(blob);
     window.location.href=url;
   } else {
